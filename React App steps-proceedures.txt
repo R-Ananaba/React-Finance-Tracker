@@ -1,0 +1,88 @@
+React project steps with firebase 
+Finance Tracker
+
+1-open your starter react pack on vs code editor
+2-on the terminal- run "npm install"
+3-set up your pages structure
+4-open a new terminal- install the react Router dom package version
+ "npm install react-router-dom@5.1"
+5-on the App.js file, import everything you need from the router dom package
+and set up route for all the pages
+6-Create your Nav Bar and corresponding CSS
+7-For login page, create your form, 
+8-then, useState to track what the user is typing into the input field
+ -import useState from react
+ - declare the states various login input fields under the function i.e 
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+Use state is always set to empty for input field (useState('')
+
+9-Attach the corresponding onChange handler to the inputs 
+10-create a handleSubmit function under the declared useStates
+11-Attach the handleSubmit to onSubmit in the Form Opening tag
+
+FIREBASE:
+12 create a new firebase project for the front end so we can start using
+the differences that it offers us i.e firestore databas, authentication service e.t.c.
+13-go to your firebase console and add a new project
+14-Register the front-end application for the firebase
+ -Click the web icon, enter app nickname(FinanceTracker)
+ -Click on Continue to console
+ -Click on the App icon (1 App), then settings, scroll down and select config
+ -copy the config file
+ -create firbase folder, then config.js file inside (paste the copied config file inside)
+15-Install firebase on your Vscode project terminal use(npm install firebase@8.5)
+  --create firbase folder, then config.js file inside (paste the copied config file inside)
+  -initialize all firebase services in the config file
+  -initialize the service(s) you want to use in the config file
+  -export the service(s)
+16-To use authentication service, first setup/enable the firebase authentication service on the
+ project backend of the google firebase console
+  -click on build, authentication,get started,email/password,enable
+  -import the authentication service on the config.js then initialize it as well
+
+17-Creating a useSignup hook
+ -create the hooks folder,user signup js file
+ -import useState and projectAuth 
+ -create useSignup arrow function and add usestate below e.g error and isPending
+ -create a async signup function (under useSignup hook) which will be invoked whenever the user signsup
+ /submits the form
+ -under the signupfunction, return the things you want to use whenever you import the useSignup hook
+ in a component e.g return {error, isPending, signup}
+ -Inside the signup function use 'try' to signup the user.
+   try {
+        //signup user
+        const res = await projectAuth.createUserWithEmailAndPassword(email, password) //creates user and stores returned valid response in variable res
+        console.log(res.user) //show on the console valid response of user just created
+	
+        //if the signup fails,no user created then we get an invalid response (no user,no response,invalid response) stored in res
+	if (!res) {
+	  throw   new error('could not complete signup')
+      } 
+
+	await res.user.updateProfile({displayName: displayName}) //updateProfile() method takes in an object as parameter
+	setIsPending(false)
+	setError(null)
+
+ -Use 'catch(err)'after the 'try' to get the error if signup fails e.g.
+   catch(err){
+        console.log(err.message) //print error
+        setError(err.message)
+        setIsPending(false)
+     }
+-user was created with only the email and the password as firebase did not allow us to pass the displayname to firebase as well.
+ to pass the displayname, we have to update the profile of the user (user object : res.user) and set the displayname property.
+ see implimentation in 'try' above.
+
+using the created userSignup hook in Signup.js
+1-import the hook
+2.add it to the Signup component like this: const {signup, isPending, error} = userSignup()
+3.use the returned parameters (signup, isPending, error) in the signup.js file accordingly
+
+TO BE REVIEWED,see numbering in 
+storing user object in a global state for any logged in user using the Auth context
+1.create a context folder then javascript file for the authentication context
+2.
+
+//Research: Storing and fetching user data to/from sql database using react liberary/framework
+
